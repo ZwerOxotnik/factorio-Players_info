@@ -1,4 +1,13 @@
 ﻿---------------------------------------------------------------------------------------------------
+Version: 1.0.2
+Date: 2023-01-28
+  Changes:
+    - Improved performance for quirk Factorio cases
+    - Refactored some variables
+  Bugfixes:
+    - Fixed the mod for saves without this mod
+    - Fixed crash because of global update in the mod
+---------------------------------------------------------------------------------------------------
 Version: 1.0.1
 Date: 2023-01-28
   Changes:

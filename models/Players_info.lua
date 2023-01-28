@@ -5,9 +5,9 @@ local M = {}
 --#region Global data
 local mod_data
 
----@class opened_Players_info_UI_refs
+---@class opened_players_info_UI_refs
 ---@type table<integer, LuaGuiElement>
-local opened_Players_info_UI_refs
+local opened_players_info_UI_refs
 --#endregion
 
 
@@ -36,7 +36,7 @@ local SCROLL_PANE = {
 local GREEN_COLOR = {0, 255, 0}
 local GREY_COLOR = {190, 190, 190}
 local RED_COLOR = {255, 0, 0}
-local MIN_AFK_TIME = 60 * 10
+local MIN_AFK_TICKS = 60 * 10
 --#endregion
 
 
@@ -106,7 +106,7 @@ local function update_players_info_UI(player, main_table)
 			main_table.add(nick_label)
 			local time_label = main_table.add(LABEL)
 			time_label.caption = get_player_time(target.online_time)
-			if target.afk_time >= MIN_AFK_TIME then
+			if target.afk_time >= MIN_AFK_TICKS then
 				time_label.style.font_color = GREY_COLOR
 			end
 			local force_label = main_table.add(LABEL)
@@ -125,7 +125,7 @@ end
 local function switch_players_info_GUI(player)
 	local PI_frame = player.gui.screen.PI_frame
 	if PI_frame.visible then
-		opened_Players_info_UI_refs[player.index] = nil
+		opened_players_info_UI_refs[player.index] = nil
 	else
 		update_players_info_UI(player)
 	end
@@ -172,11 +172,11 @@ end
 --#region Functions of events
 
 local function on_player_removed(event)
-	opened_Players_info_UI_refs[event.player_index] = nil
+	opened_players_info_UI_refs[event.player_index] = nil
 end
 
 local function update_all_gui()
-	for player_index, main_table in pairs(opened_Players_info_UI_refs) do
+	for player_index, main_table in pairs(opened_players_info_UI_refs) do
 		local player = game.get_player(player_index)
 		if player and player.valid then
 			update_players_info_UI(player, main_table)
@@ -186,13 +186,15 @@ end
 
 local function on_player_left_game(event)
 	local player_index = event.player_index
-	opened_Players_info_UI_refs[player_index] = nil
+	opened_players_info_UI_refs[player_index] = nil
 
 	local player = game.get_player(player_index)
 	if not (player and player.valid) then return end
 
-	player.gui.screen.PI_frame.visible = false
+	local PI_frame = player.gui.screen.PI_frame
+	PI_frame.visible = false
 	update_all_gui()
+	PI_frame.shallow_frame["scroll-pane"].main_table.clear()
 end
 
 local function on_player_created(event)
@@ -207,7 +209,8 @@ local GUIS = {
 	PI_hide = function(_, player)
 		local PI_frame = player.gui.screen.PI_frame
 		PI_frame.visible = false
-		opened_Players_info_UI_refs[player.index] = nil
+		opened_players_info_UI_refs[player.index] = nil
+		PI_frame.shallow_frame["scroll-pane"].main_table.clear()
 	end,
 	PI_find_player = function(element, player)
 		local target_index = tonumber(element.parent.name)
@@ -273,22 +276,27 @@ end
 local function link_data()
 	mod_data = global.PI
 	if mod_data == nil then return end
-	opened_Players_info_UI_refs = mod_data.opened_Players_info_UI_refs
+	opened_players_info_UI_refs = mod_data.opened_players_info_UI_refs
 end
 
 local function update_global_data()
 	global.PI = global.PI or {}
 	mod_data = global.PI
-	mod_data.opened_Players_info_UI_refs = {}
+	mod_data.opened_players_info_UI_refs = {}
 
 	link_data()
 
-	-- Remove main frame
+	-- Fix main frame
 	for _, player in pairs(game.players) do
-		if player.valid and not player.connected then
+		if player.valid then
 			local PI_frame = player.gui.relative.PI_frame
 			if PI_frame and PI_frame.valid then
-				PI_frame.destroy()
+				if not player.connected then
+					PI_frame.visible = false
+					PI_frame.shallow_frame["scroll-pane"].main_table.clear()
+				end
+			else
+				create_players_info_gui(player)
 			end
 		end
 	end
@@ -327,8 +335,8 @@ M.events = {
 			update_all_gui()
 			return
 		end
-		mod_data.opened_Players_info_UI_refs = {}
-		opened_Players_info_UI_refs = mod_data.opened_Players_info_UI_refs
+		mod_data.opened_players_info_UI_refs = {}
+		opened_players_info_UI_refs = mod_data.opened_players_info_UI_refs
 	end,
 	[defines.events.on_gui_click] = on_gui_click,
 	["PI_open_Players_info_GUI"] = on_players_info_GUI
