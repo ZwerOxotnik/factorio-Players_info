@@ -19,6 +19,7 @@ local TITLEBAR_FLOW = {type = "flow", style = "flib_titlebar_flow", name = "titl
 local EMPTY_WIDGET = {type = "empty-widget"}
 local LABEL = {type = "label"}
 local FLOW = {type = "flow"}
+local VERTICAL_FLOW = {type = "flow", direction = "vertical"}
 local HIDE_BUTTON = {
 	hovered_sprite = "utility/close_black",
 	clicked_sprite = "utility/close_black",
@@ -53,13 +54,13 @@ local function get_player_time(ticks)
 
 	if minutes < 10 then
 		if minutes == 0 then
-			minutes = "00m"
+			minutes = "00"
 		else
-			minutes = "0" .. minutes .. "m"
+			minutes = "0" .. minutes
 		end
 	end
 
-	return hours .. "h:" .. minutes
+	return hours .. ":" .. minutes
 end
 
 local find_button = {type = "sprite-button", name = "PI_find_player", sprite = "entity/character", style = "slot_button_in_shallow_frame"}
@@ -88,7 +89,10 @@ local function update_players_info_UI(player, main_table)
 
 	main_table.add(EMPTY_WIDGET)
 	main_table.add(LABEL).caption = {"Players_info.nickname-header"}
-	main_table.add(LABEL).caption = {"Players_info.play-time-header"}
+	local time_header = main_table.add(VERTICAL_FLOW)
+	time_header.style.horizontal_align = "center"
+	time_header.add(LABEL).caption = {"Players_info.play-time-header"}
+	time_header.add(LABEL).caption = {"Players_info.time-format-header"}
 	main_table.add(LABEL).caption = {"Players_info.force-header"}
 
 	-- Update content
