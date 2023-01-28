@@ -6,7 +6,7 @@
 	"author": "ZwerOxotnik",
 	"contact": "zweroxotnik@gmail.com, Discord:ZwerOxotnik#7117",
 	"homepage": "https://www.reddit.com/r/ZwerOxotnik/",
-	"description": "Shows info about online players by pressing \"TAB\" button.\nThis mod is designed for PvP, TvT, PvE scenarios.",
+	"description": "See locale/*",
 	"dependencies": [
 		"zk-lib >= 0.10.0",
 		"flib",
