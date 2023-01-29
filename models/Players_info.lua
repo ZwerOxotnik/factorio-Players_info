@@ -97,7 +97,7 @@ local function update_players_info_UI(player, main_table)
 
 	-- Update content
 	for _, target in pairs(game.connected_players) do
-		if target.valid and target ~= player then
+		if target.valid then
 			local target_force = target.force
 			local flow = main_table.add(FLOW)
 			flow.name = tostring(player.index)
