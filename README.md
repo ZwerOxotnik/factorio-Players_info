@@ -63,7 +63,7 @@ This mod is designed for PvP, TvT, PvE scenarios.
 If you want to download from this source, then use commands below (requires [git][git]).
 
 ```bash
-git clone --recurse-submodules -j8 https://github.com/ZwerOxotnik/factorio-Players_info
+git clone --recurse-submodules -j8 https://github.com/ZwerOxotnik/factorio-Players_info Players_info
 cd Players_info
 ```
 
@@ -79,7 +79,7 @@ Alternatively, join the [Discord group][Discord] and send a message there.
 License
 -------
 
-Copyright (c) 2023 ZwerOxotnik \<zweroxotnik@gmail.com\>
+Copyright (c) 2023-2024 ZwerOxotnik \<zweroxotnik@gmail.com\>
 
 Use of the source code included here is governed by the Apache License, Version 2.0. See the [LICENSE](/LICENSE) file for details.
 

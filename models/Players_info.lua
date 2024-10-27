@@ -23,7 +23,7 @@ local VERTICAL_FLOW = {type = "flow", direction = "vertical"}
 local HIDE_BUTTON = {
 	hovered_sprite = "utility/close_black",
 	clicked_sprite = "utility/close_black",
-	sprite = "utility/close_white",
+	sprite = "utility/close",
 	style = "frame_action_button",
 	type = "sprite-button",
 	name = "PI_hide"
@@ -227,17 +227,17 @@ local GUIS = {
 		end
 
 		local position = target.position
-		if not target.is_chunk_visible(surface, position) then
+		if not target.force.is_chunk_visible(surface, position) then
 			player.print({"Players_info.cant-find-target"}, {255, 255, 0})
 			return
 		end
 
-		local character = target.character
-		if character and character.valid then
-			player.zoom_to_world(position, 0.5, character)
-		else
-			player.zoom_to_world(position, 0.5)
-		end
+		player.set_controller{
+			type = defines.controllers.remote,
+			start_zoom = 0.5,
+			position = position,
+			surface = player.surface
+		}
 	end
 }
 local function on_gui_click(event)
@@ -274,14 +274,14 @@ end
 --#region Pre-game stage
 
 local function link_data()
-	mod_data = global.PI
+	mod_data = storage.PI
 	if mod_data == nil then return end
 	opened_players_info_UI_refs = mod_data.opened_players_info_UI_refs
 end
 
 local function update_global_data()
-	global.PI = global.PI or {}
-	mod_data = global.PI
+	storage.PI = storage.PI or {}
+	mod_data = storage.PI
 	mod_data.opened_players_info_UI_refs = {}
 
 	link_data()

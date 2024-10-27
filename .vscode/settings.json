@@ -39,7 +39,7 @@
 		"table": "enable",
 		"math": "enable",
 		"string": "enable",
-		"package": "enable",
+		"package": "disable",
 		"debug": "enable",
 		"bit32": "enable",
 		"io": "disable",
@@ -54,8 +54,7 @@
 		"script",
 		"rendering",
 		"game",
-		"commands",
-		"/media/pcu1/D/factorio/data"
+		"commands"
 	],
 	"Lua.intelliSense.searchDepth": 3,
 	"Lua.diagnostics.workspaceDelay": 50,
@@ -75,15 +74,5 @@
 	],
 	"triggerTaskOnSave.tasks": {
 		"Luacheck": ["*.lua"]
-	},
-	"factorio.versions": [
-		{
-			"name": "latest",
-			"factorioPath": "/media/pcu1/D/factorio/bin/x64/factorio",
-			"active": true
-		}
-	],
-	"Lua.workspace.userThirdParty": [
-		"/home/pcu1/.config/Code/User/workspaceStorage/83dfc92f0c1cf2de22ea1781451c0d31/justarandomgeek.factoriomod-debug/sumneko-3rd"
-	]
+	}
 }
